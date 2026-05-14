@@ -101,9 +101,13 @@ where
         )?;
 
         // Fetch ring and key derivation from bulletin (IO) ---
-        let (key_derivation, ring_payload) =
-            fetch_bulletin_payloads(&*self.state.bulletin, &req.namespace, &req.derivation_id)
-                .await?;
+        let (key_derivation, ring_payload) = fetch_bulletin_payloads(
+            &*self.state.bulletin,
+            &self.state.local_storage,
+            &req.namespace,
+            &req.derivation_id,
+        )
+        .await?;
 
         // ACP will populate the validity window server-side in a future change;
         // until then no client-supplied window is honoured.

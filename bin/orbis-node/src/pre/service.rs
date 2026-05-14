@@ -83,8 +83,13 @@ where
 
         let req = request.into_inner();
 
-        let (document_payload, ring_payload) =
-            fetch_bulletin_payloads(&*self.state.bulletin, &req.namespace, &req.object_id).await?;
+        let (document_payload, ring_payload) = fetch_bulletin_payloads(
+            &*self.state.bulletin,
+            &self.state.local_storage,
+            &req.namespace,
+            &req.object_id,
+        )
+        .await?;
 
         // ACP will populate the validity window server-side in a future change;
         // until then no client-supplied window is honoured.
